@@ -20,7 +20,7 @@ public abstract class ModelMapper<T> {
 
     public abstract List<T> transformResultSetToModel(String dbName, ResultSet resultSet) throws SQLException;
 
-    public String getMappedColumnName(String dbName, String columnName) {
+    public String getMappedColumnName(String dbName, String columnName) throws IllegalArgumentException {
         return objectMapping.get(dbName).get(columnName);
     }
 }

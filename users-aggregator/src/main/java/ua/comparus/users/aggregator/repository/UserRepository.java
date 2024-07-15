@@ -2,7 +2,6 @@ package ua.comparus.users.aggregator.repository;
 
 import org.springframework.stereotype.Repository;
 import ua.comparus.users.aggregator.mapper.ModelMapper;
-import ua.comparus.users.aggregator.mapper.UserMapper;
 import ua.comparus.users.aggregator.model.User;
 import ua.comparus.users.aggregator.repository.utils.RepositoryUtil;
 
@@ -19,7 +18,7 @@ public class UserRepository {
         this.userMapper = userMapper;
     }
 
-    public List<User> findAll(Map<String, String> filter) {
-        return repositoryUtil.runQuery(filter, userMapper);
+    public List<User> findAll(Map<String, String> filters) {
+        return repositoryUtil.runQuery(filters, userMapper);
     }
 }

@@ -8,7 +8,7 @@ paths:
       summary: List all users
       operationId: listUsers
       parameters:
-        - name: parameters
+        - name: filters
           in: query
           required: false
           schema:

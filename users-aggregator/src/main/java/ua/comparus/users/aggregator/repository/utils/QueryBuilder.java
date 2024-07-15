@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
+import static java.util.Objects.requireNonNull;
+
 public class QueryBuilder {
-    public static final String SPACE = " ";
     private final StringBuilder query = new StringBuilder("select ");
 
     public static QueryBuilder builder() {
@@ -28,17 +29,26 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder appendFilters(ModelMapper<?> modelMapper, String dbName, Map<String, String> filters) {
+    public QueryBuilder appendFilters(ModelMapper<?> modelMapper, String dbName, Map<String, String> filters) throws IllegalArgumentException {
         if (filters == null || filters.isEmpty()) {
             return this;
         }
         StringJoiner whereClauseJoiner = new StringJoiner(" AND ");
-        filters.forEach((key, value) -> whereClauseJoiner.add(modelMapper.getMappedColumnName(dbName, key) + "=" + value));
-        query.append(SPACE).append("WHERE ").append(whereClauseJoiner);
+        try {
+            filters.forEach((key, value) -> whereClauseJoiner.add(
+                    requireNonNull(modelMapper.getMappedColumnName(dbName, key)) + '=' + wrapBySingleQuote(value)));
+            query.append(" WHERE ").append(whereClauseJoiner);
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("No filtering column(s) found", e);
+        }
         return this;
     }
 
     public String build() {
         return query.toString();
+    }
+
+    private String wrapBySingleQuote(String value) {
+        return '\'' + value + '\'';
     }
 }

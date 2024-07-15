@@ -19,8 +19,8 @@ public class UserMapper extends ModelMapper<User> {
 
     public List<User> transformResultSetToModel(String dbName, ResultSet resultSet) throws SQLException {
         List<User> users = new ArrayList<>();
-        User user = new User();
         while (resultSet.next()) {
+            User user = new User();
             Map<String, String> dataSource = dataSources.get(dbName).getMapping();
             user.setId(resultSet.getLong(dataSource.get("id")));
             user.setName(resultSet.getString(dataSource.get("name")));

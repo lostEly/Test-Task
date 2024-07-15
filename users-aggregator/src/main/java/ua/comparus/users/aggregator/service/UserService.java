@@ -19,7 +19,7 @@ public class UserService implements UsersApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<User>> listUsers(Map<String, String> parameters) {
-        return ResponseEntity.ok(userRepository.findAll(parameters));
+    public ResponseEntity<List<User>> listUsers(Map<String, String> filters) {
+        return ResponseEntity.ok(userRepository.findAll(filters));
     }
 }
