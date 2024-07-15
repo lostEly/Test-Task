@@ -5,6 +5,7 @@ import ua.comparus.users.aggregator.config.datasource.DataSourceProperties;
 import ua.comparus.users.aggregator.mapper.ModelMapper;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,12 +15,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class RepositoryUtil<T> {
-    private final Map<String, Connection> dataSources;
-    DataSourceProperties dataSourceProperties;
+    private final Map<String, Connection> connectionsCache;
+    private final Map<String, DataSourceProperties.DataSource> dataSources;
     Map<String, QueryBuilder> queries = new HashMap<>();
 
-    public RepositoryUtil(DataSourceProperties dataSourceProperties, Map<String, Connection> dataSources) {
-        this.dataSourceProperties = dataSourceProperties;
+    public RepositoryUtil(Map<String, Connection> connectionsCache, Map<String, DataSourceProperties.DataSource> dataSources) {
+        this.connectionsCache = connectionsCache;
         this.dataSources = dataSources;
         initializeSelectQueryBuilders();
     }
@@ -32,10 +33,10 @@ public class RepositoryUtil<T> {
         return dataSources.keySet().stream()
                 .map(dbName -> {
                     try {
-                        Connection connection = dataSources.get(dbName);
+                        Connection connection = connectionsCache.get(dbName);
                         String query = this.getSelectQueryBuilderByDbName(dbName).appendFilters(modelMapper, dbName, filter).build();
-                        var rs = connection.createStatement().executeQuery(query);
-                        return modelMapper.transformResultSetToModel(dbName, rs);
+                        ResultSet resultSet = connection.createStatement().executeQuery(query);
+                        return modelMapper.transformResultSetToModel(dbName, resultSet);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
@@ -43,7 +44,7 @@ public class RepositoryUtil<T> {
     }
 
     private void initializeSelectQueryBuilders() {
-        for (DataSourceProperties.DataSource dataSource : dataSourceProperties.getDataSources()) {
+        for (DataSourceProperties.DataSource dataSource : dataSources.values()) {
             QueryBuilder queryBuilder = QueryBuilder.builder()
                     .appendColumns(dataSource.getMapping().values().stream().toList())
                     .appendTable(dataSource.getTable());

@@ -32,9 +32,9 @@ public class QueryBuilder {
         if (filters == null || filters.isEmpty()) {
             return this;
         }
-        var sj = new StringJoiner(" AND ");
-        filters.forEach((key, value) -> sj.add(modelMapper.getMappedColumnName(dbName, key) + "=" + value));
-        query.append(SPACE).append("WHERE ").append(sj);
+        StringJoiner whereClauseJoiner = new StringJoiner(" AND ");
+        filters.forEach((key, value) -> whereClauseJoiner.add(modelMapper.getMappedColumnName(dbName, key) + "=" + value));
+        query.append(SPACE).append("WHERE ").append(whereClauseJoiner);
         return this;
     }
 

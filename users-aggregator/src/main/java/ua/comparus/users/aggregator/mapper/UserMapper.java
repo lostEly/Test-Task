@@ -11,18 +11,17 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class UserMapper implements ModelMapper<User> {
-    DataSourceProperties dataSourceProperties;
+public class UserMapper extends ModelMapper<User> {
 
-    public UserMapper(DataSourceProperties dataSourceProperties) {
-        this.dataSourceProperties = dataSourceProperties;
+    public UserMapper(Map<String, DataSourceProperties.DataSource> dataSources) {
+        super(dataSources);
     }
 
     public List<User> transformResultSetToModel(String dbName, ResultSet resultSet) throws SQLException {
         List<User> users = new ArrayList<>();
         User user = new User();
         while (resultSet.next()) {
-            Map<String, String> dataSource = dataSourceProperties.getDataSources().stream().filter(ds -> ds.getName().equals(dbName)).findFirst().get().getMapping();
+            Map<String, String> dataSource = dataSources.get(dbName).getMapping();
             user.setId(resultSet.getLong(dataSource.get("id")));
             user.setName(resultSet.getString(dataSource.get("name")));
             user.setUsername(resultSet.getString(dataSource.get("username")));
@@ -30,9 +29,5 @@ public class UserMapper implements ModelMapper<User> {
             users.add(user);
         }
         return users;
-    }
-
-    public String getMappedColumnName(String dbName, String columnName) {
-       return dataSourceProperties.getDataSources().stream().filter(ds -> ds.getName().equals(dbName)).findFirst().get().getMapping().get(columnName);
     }
 }

@@ -8,12 +8,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Configuration
 public class DataSourceConfig {
 
     @Bean
-    public Map<String, Connection> dataSources(DataSourceProperties dataSourceProperties) throws SQLException {
+    public Map<String, Connection> connectionsCache(DataSourceProperties dataSourceProperties) throws SQLException {
         Map<String, Connection> connectionsMap = new HashMap<>();
 
         for (DataSourceProperties.DataSource dataSource : dataSourceProperties.getDataSources()) {
@@ -21,5 +23,10 @@ public class DataSourceConfig {
             connectionsMap.put(dataSource.getName(), connection);
         }
         return connectionsMap;
+    }
+
+    @Bean
+    public Map<String, DataSourceProperties.DataSource> dataSources(DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties.getDataSources().stream().collect(Collectors.toMap(DataSourceProperties.DataSource::getName, Function.identity()));
     }
 }
