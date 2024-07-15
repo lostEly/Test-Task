@@ -2,7 +2,13 @@ data-sources:
   data-sources:
     - name: data-base-1
       strategy: postgres
-      url: jdbc:postgresql://localhost:5432/yourdatabase
+      url: jdbc:postgresql://localhost:5432/testdb
       table: users
-      user: testuser
-      password: testpass
+      user: toor
+      password: root
+    - name: data-base-2
+      strategy: mysql
+      url: jdbc:mysql://localhost:3306/testdb
+      table: users
+      user: mysql
+      password: mysql

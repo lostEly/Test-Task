@@ -5,6 +5,8 @@ import ua.comparus.users.aggregator.model.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,10 +30,19 @@ public class UserServiceRepository {
                     }
                 }).map(resultSet -> {
                     try {
-                        return resultSet.unwrap(User.class);
+                        var users = new ArrayList<User>();
+                        while (resultSet.next()) {
+                            User user = new User();
+                            user.setId(resultSet.getLong("id"));
+                            user.setUsername(resultSet.getString("username"));
+                            user.setName(resultSet.getString("name"));
+                            user.setName(resultSet.getString("surname"));
+                            users.add(user);
+                        }
+                        return users;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-                }).collect(Collectors.toList());
+                }).flatMap(Collection::stream).collect(Collectors.toList());
     }
 }

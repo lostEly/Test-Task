@@ -28,8 +28,10 @@ public class DataSourceConfig {
         switch (strategy.toLowerCase()) {
             case "postgres":
                 Class.forName("org.postgresql.Driver");
+                break;
             case "mysql":
                 Class.forName("com.mysql.cj.jdbc.Driver");
+                break;
             default:
                 throw new IllegalArgumentException("Unknown strategy: " + strategy);
         }
