@@ -94,7 +94,7 @@
             <artifactId>testcontainers-bom</artifactId>
             <version>1.19.8</version>
             <type>pom</type>
-            <scope>import</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -178,12 +178,10 @@
                             <generatorName>spring</generatorName>
                             <apiPackage>ua.comparus.users.aggregator.api</apiPackage>
                             <modelPackage>ua.comparus.users.aggregator.model</modelPackage>
-                            <invokerPackage>ua.comparus.users.aggregator.invoker</invokerPackage>
                             <supportingFilesToGenerate>
                                 ApiUtil.java
                             </supportingFilesToGenerate>
                             <configOptions>
-                                <!--                                <sourceFolder>src/main/java/main</sourceFolder>-->
                                 <delegatePattern>true</delegatePattern>
                             </configOptions>
                         </configuration>
