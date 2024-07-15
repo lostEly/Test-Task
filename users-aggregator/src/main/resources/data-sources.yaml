@@ -1,0 +1,8 @@
+data-sources:
+  data-sources:
+    - name: data-base-1
+      strategy: postgres
+      url: jdbc:postgresql://localhost:5432/yourdatabase
+      table: users
+      user: testuser
+      password: testpass
