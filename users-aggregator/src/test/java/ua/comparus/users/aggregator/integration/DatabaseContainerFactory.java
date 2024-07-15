@@ -4,11 +4,12 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
+import ua.comparus.users.aggregator.config.datasource.DataSource;
 import ua.comparus.users.aggregator.config.datasource.DataSourceProperties;
 
 public class DatabaseContainerFactory {
 
-    public static GenericContainer<?> createDatabaseContainer(DataSourceProperties.DataSource dataSource) {
+    public static GenericContainer<?> createDatabaseContainer(DataSource dataSource) {
         return switch (dataSource.getStrategy()) {
             case "mysql" -> new MySQLContainer<>(DockerImageName.parse("mysql:latest"))
                     .withDatabaseName("testdb").withUsername(dataSource.getUser())

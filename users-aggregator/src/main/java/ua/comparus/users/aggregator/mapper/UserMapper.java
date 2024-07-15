@@ -1,7 +1,7 @@
 package ua.comparus.users.aggregator.mapper;
 
 import org.springframework.stereotype.Component;
-import ua.comparus.users.aggregator.config.datasource.DataSourceProperties;
+import ua.comparus.users.aggregator.config.datasource.DataSource;
 import ua.comparus.users.aggregator.model.User;
 
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Component
 public class UserMapper extends ModelMapper<User> {
 
-    public UserMapper(Map<String, DataSourceProperties.DataSource> dataSources) {
+    public UserMapper(Map<String, DataSource> dataSources) {
         super(dataSources);
     }
 

@@ -1,7 +1,7 @@
 package ua.comparus.users.aggregator.repository.utils;
 
 import org.springframework.stereotype.Component;
-import ua.comparus.users.aggregator.config.datasource.DataSourceProperties;
+import ua.comparus.users.aggregator.config.datasource.DataSource;
 import ua.comparus.users.aggregator.exception.DatasourceOperationException;
 import ua.comparus.users.aggregator.mapper.ModelMapper;
 
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @Component
 public class RepositoryUtil<T> {
     private final Map<String, Connection> connectionsCache;
-    private final Map<String, DataSourceProperties.DataSource> dataSources;
+    private final Map<String, DataSource> dataSources;
 
-    public RepositoryUtil(Map<String, Connection> connectionsCache, Map<String, DataSourceProperties.DataSource> dataSources) {
+    public RepositoryUtil(Map<String, Connection> connectionsCache, Map<String, DataSource> dataSources) {
         this.connectionsCache = connectionsCache;
         this.dataSources = dataSources;
     }
@@ -38,7 +38,7 @@ public class RepositoryUtil<T> {
                 }).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    private QueryBuilder getSelectQueryBuilder(DataSourceProperties.DataSource dataSource) {
+    private QueryBuilder getSelectQueryBuilder(DataSource dataSource) {
         return QueryBuilder.builder()
                 .appendColumns(dataSource.getMapping().values().stream().toList())
                 .appendTable(dataSource.getTable());

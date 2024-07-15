@@ -18,7 +18,7 @@ public class DataSourceConfig {
     public Map<String, Connection> connectionsCache(DataSourceProperties dataSourceProperties) throws SQLException {
         Map<String, Connection> connectionsMap = new HashMap<>();
 
-        for (DataSourceProperties.DataSource dataSource : dataSourceProperties.getDataSources()) {
+        for (DataSource dataSource : dataSourceProperties.getDataSources()) {
             Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUser(), dataSource.getPassword());
             connectionsMap.put(dataSource.getName(), connection);
         }
@@ -26,7 +26,7 @@ public class DataSourceConfig {
     }
 
     @Bean
-    public Map<String, DataSourceProperties.DataSource> dataSources(DataSourceProperties dataSourceProperties) {
-        return dataSourceProperties.getDataSources().stream().collect(Collectors.toMap(DataSourceProperties.DataSource::getName, Function.identity()));
+    public Map<String, DataSource> dataSources(DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties.getDataSources().stream().collect(Collectors.toMap(DataSource::getName, Function.identity()));
     }
 }
