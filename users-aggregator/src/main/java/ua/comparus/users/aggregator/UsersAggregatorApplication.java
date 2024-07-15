@@ -27,10 +27,6 @@ class AppStartupRunner implements ApplicationRunner {
 
     @Autowired
     private DataSourceProperties dataSourceProperties;
-    private static final Logger LOG =
-            LoggerFactory.getLogger(AppStartupRunner.class);
-
-    public static int counter;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
