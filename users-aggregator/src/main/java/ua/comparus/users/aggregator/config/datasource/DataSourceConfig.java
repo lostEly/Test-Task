@@ -21,11 +21,10 @@ public class DataSourceConfig {
             Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUser(), dataSource.getPassword());
             connectionsMap.put(dataSource.getName(), connection);
         }
-
         return connectionsMap;
     }
 
-    private String registerDriver(String strategy) throws ClassNotFoundException {
+    private void registerDriver(String strategy) throws ClassNotFoundException {
         switch (strategy.toLowerCase()) {
             case "postgres":
                 Class.forName("org.postgresql.Driver");

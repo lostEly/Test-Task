@@ -11,7 +11,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 import ua.comparus.users.aggregator.config.datasource.DataSourceProperties;
-import javax.validation.Valid;
 
 @SpringBootApplication
 @EnableConfigurationProperties

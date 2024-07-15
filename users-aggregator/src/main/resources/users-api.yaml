@@ -10,15 +10,16 @@ paths:
       responses:
         '200':
           description: OK
-
-#    post:
-#      summary: Create a user
-#      operationId: createPets
-#  /pets/{petId}:
-#    get:
-#      summary: Info for a specific pet
-#      operationId: showPetById
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Users"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     User:
@@ -37,6 +38,10 @@ components:
           type: string
         surname:
           type: string
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
     Error:
       type: object
       required:
