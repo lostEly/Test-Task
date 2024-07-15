@@ -7,6 +7,14 @@ paths:
     get:
       summary: List all users
       operationId: listUsers
+      parameters:
+        - name: parameters
+          in: query
+          required: false
+          schema:
+            type: object
+            additionalProperties:
+              type: string
       responses:
         '200':
           description: OK

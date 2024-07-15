@@ -33,9 +33,9 @@ public class RepositoryUtil<T> {
                 .map(dbName -> {
                     try {
                         Connection connection = dataSources.get(dbName);
-                        String query = this.getSelectQueryBuilderByDbName(dbName).appendFilters(filter).build();
+                        String query = this.getSelectQueryBuilderByDbName(dbName).appendFilters(modelMapper, dbName, filter).build();
                         var rs = connection.createStatement().executeQuery(query);
-                        return modelMapper.transformResultSet(dbName, rs);
+                        return modelMapper.transformResultSetToModel(dbName, rs);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }

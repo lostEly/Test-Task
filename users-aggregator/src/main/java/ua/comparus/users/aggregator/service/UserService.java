@@ -7,6 +7,7 @@ import ua.comparus.users.aggregator.api.UsersApiDelegate;
 import ua.comparus.users.aggregator.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService implements UsersApiDelegate {
@@ -18,7 +19,7 @@ public class UserService implements UsersApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<User>> listUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+    public ResponseEntity<List<User>> listUsers(Map<String, String> parameters) {
+        return ResponseEntity.ok(userRepository.findAll(parameters));
     }
 }

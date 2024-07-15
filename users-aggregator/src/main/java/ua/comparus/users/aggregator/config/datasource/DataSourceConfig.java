@@ -13,27 +13,13 @@ import java.util.Map;
 public class DataSourceConfig {
 
     @Bean
-    public Map<String, Connection> dataSources(DataSourceProperties dataSourceProperties) throws SQLException, ClassNotFoundException {
+    public Map<String, Connection> dataSources(DataSourceProperties dataSourceProperties) throws SQLException {
         Map<String, Connection> connectionsMap = new HashMap<>();
 
         for (DataSourceProperties.DataSource dataSource : dataSourceProperties.getDataSources()) {
-            registerDriver(dataSource.getStrategy());
             Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUser(), dataSource.getPassword());
             connectionsMap.put(dataSource.getName(), connection);
         }
         return connectionsMap;
-    }
-
-    private void registerDriver(String strategy) throws ClassNotFoundException {
-        switch (strategy.toLowerCase()) {
-            case "postgres":
-                Class.forName("org.postgresql.Driver");
-                break;
-            case "mysql":
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown strategy: " + strategy);
-        }
     }
 }

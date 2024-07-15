@@ -18,7 +18,7 @@ public class UserMapper implements ModelMapper<User> {
         this.dataSourceProperties = dataSourceProperties;
     }
 
-    public List<User> transformResultSet(String dbName, ResultSet resultSet) throws SQLException {
+    public List<User> transformResultSetToModel(String dbName, ResultSet resultSet) throws SQLException {
         List<User> users = new ArrayList<>();
         User user = new User();
         while (resultSet.next()) {
@@ -30,5 +30,9 @@ public class UserMapper implements ModelMapper<User> {
             users.add(user);
         }
         return users;
+    }
+
+    public String getMappedColumnName(String dbName, String columnName) {
+       return dataSourceProperties.getDataSources().stream().filter(ds -> ds.getName().equals(dbName)).findFirst().get().getMapping().get(columnName);
     }
 }

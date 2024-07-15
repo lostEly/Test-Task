@@ -1,5 +1,7 @@
 package ua.comparus.users.aggregator.repository.utils;
 
+import ua.comparus.users.aggregator.mapper.ModelMapper;
+
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -26,12 +28,12 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder appendFilters(Map<String, String> filters) {
+    public QueryBuilder appendFilters(ModelMapper<?> modelMapper, String dbName, Map<String, String> filters) {
         if (filters == null || filters.isEmpty()) {
             return this;
         }
         var sj = new StringJoiner(" AND ");
-        filters.entrySet().stream().forEach(entry -> sj.add(entry.getKey() + "=" + entry.getValue()));
+        filters.forEach((key, value) -> sj.add(modelMapper.getMappedColumnName(dbName, key) + "=" + value));
         query.append(SPACE).append("WHERE ").append(sj);
         return this;
     }
