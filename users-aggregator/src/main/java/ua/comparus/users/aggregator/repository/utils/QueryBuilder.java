@@ -11,6 +11,9 @@ import static java.util.Objects.requireNonNull;
 public class QueryBuilder {
     private final StringBuilder query = new StringBuilder("select ");
 
+    private QueryBuilder() {
+    }
+
     public static QueryBuilder builder() {
         return new QueryBuilder();
     }
@@ -35,8 +38,7 @@ public class QueryBuilder {
         }
         StringJoiner whereClauseJoiner = new StringJoiner(" AND ");
         try {
-            filters.forEach((key, value) -> whereClauseJoiner.add(
-                    requireNonNull(modelMapper.getMappedColumnName(dbName, key)) + '=' + wrapBySingleQuote(value)));
+            filters.forEach((key, value) -> whereClauseJoiner.add(requireNonNull(modelMapper.getMappedColumnName(dbName, key)) + '=' + wrapBySingleQuote(value)));
             query.append(" WHERE ").append(whereClauseJoiner);
         } catch (NullPointerException e) {
             throw new IllegalArgumentException("No filtering column(s) found", e);

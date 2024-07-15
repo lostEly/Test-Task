@@ -14,7 +14,7 @@ import java.util.Map;
 @Getter
 @ToString
 @Component
-@ConfigurationProperties(prefix = "data-sources")
+@ConfigurationProperties
 @PropertySource(value = "classpath:data-sources.yaml", factory = YamlPropertySourceFactory.class)
 public class DataSourceProperties {
 
