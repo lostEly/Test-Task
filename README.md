@@ -11,7 +11,7 @@ The aggregation service to gather users information via multiple databases.
 /GET users?column=val - applies filtering before users retrieval.
 
 ## Requirements:
-* Java 8+;
+* Java 17+;
 * Maven 3;
 * Docker.
 
